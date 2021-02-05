@@ -4,7 +4,9 @@ import cn.liuqx.data.util.TypeUtil;
 import lombok.SneakyThrows;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -45,6 +47,15 @@ public class RootObj<T> {
         return new RootObj<>(root);
     }
 
+    @SneakyThrows
     void addObject(Path<?> path, Object obj) {
+        Field field = fieldMap.get(path.getName());
+        if (Collection.class.isAssignableFrom(field.getType())) {
+            Object c = field.get(t);
+            if(c!=null){
+                Method m = Collection.class.getMethod("add", Object.class);
+                m.invoke(m, obj);
+            }
+        }
     }
 }

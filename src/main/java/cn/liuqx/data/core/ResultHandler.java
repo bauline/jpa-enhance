@@ -19,6 +19,7 @@ public class ResultHandler<T> {
     Root<T> root;
 
     public ResultHandler(Class<T> rtClass) {
+        root = new ResultRoot<T>(rtClass);
     }
 
     @SneakyThrows
